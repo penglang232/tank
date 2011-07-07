@@ -7,6 +7,7 @@
 
 
 /*
+     Git 修改
      软键盘
      按键的时候通过预先初始化的SKey(QMap类型 key是qt按键值value是软键盘)
      查找软键盘相应按键，再使用Keypressed 按键状态机设置按键状态
@@ -20,7 +21,6 @@ Game::Game(TankView* tankview)
     this->SKey.insert(Qt::Key_Left,Game::SK_LEFT);
     this->SKey.insert(Qt::Key_Right,Game::SK_RIGHT);
     this->SKey.insert(Qt::Key_Space,Game::SK_ACT);
-
     resetKey();
 
     this->createActionItems();
