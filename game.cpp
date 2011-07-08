@@ -3,10 +3,6 @@
 #include "tankview.h"
 #include "tankgnu.h"
 #include "place.h"
-<<<<<<< HEAD
-=======
-#include "fps.h"
->>>>>>> 31e68d210a2dabd8fe275c4d9f70b8c51d2d29d9
 #include <QDebug>
 
 
@@ -31,11 +27,7 @@ Game::Game(TankView* tankview)
     this->createBlockItems();
 
     this->tankview = tankview;
-<<<<<<< HEAD
     timer.setInterval(16);
-=======
-    timer.setInterval(DEF_FLUSH_TIMESTAMP);
->>>>>>> 31e68d210a2dabd8fe275c4d9f70b8c51d2d29d9
 
     this->connect(&timer,SIGNAL(timeout()),this,SLOT(paint()));
     timer.start();
@@ -49,15 +41,8 @@ Game::~Game()
 //初始化场景可动物体
 void Game::createActionItems()
 {
-<<<<<<< HEAD
     Tank* tank1 = new Tank(1);
     actionItems.append(tank1);
-=======
-    FPS* fps = new FPS();
-    Tank* tank1 = new Tank(1);
-    actionItems.append(tank1);
-    actionItems.append(fps);
->>>>>>> 31e68d210a2dabd8fe275c4d9f70b8c51d2d29d9
 }
 //初始化场景不可动物体
 void Game::createBlockItems()
