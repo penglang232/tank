@@ -21,6 +21,7 @@ public:
 
     qreal speed;
     unsigned int tankId;
+    unsigned int gnuWidth;
     uint actlevel;
     TankVector vector;
 

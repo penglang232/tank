@@ -17,6 +17,12 @@ public:
     TankView(QGraphicsView *parent = 0);
     ~TankView();
     QGraphicsScene* drawScene;
+    enum ScreenOrientation {
+        ScreenOrientationLockPortrait,
+        ScreenOrientationLockLandscape,
+        ScreenOrientationAuto
+    };
+    void setOrientation(ScreenOrientation orientation);
 protected:
     void keyPressEvent ( QKeyEvent * event );
     void keyReleaseEvent ( QKeyEvent * event );

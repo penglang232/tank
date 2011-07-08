@@ -54,7 +54,7 @@ void Sprite::resize(qreal width, qreal height)
 QRectF Sprite::boundingRect() const
 {
     if (this->_pixmap)return QRectF();
-    qreal pw = 1.0;
+    qreal pw = 2.0;
     return QRectF(QPoint(0,0),QSizeF(this->width,this->height)).adjusted(-pw/2, -pw/2, pw/2, pw/2);
 }
 

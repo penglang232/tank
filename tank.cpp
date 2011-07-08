@@ -7,12 +7,12 @@
 #include "game.h"
 #include "tankgnu.h"
 
-#define TANK_DEF_WIDTH 64
-#define TANK_DEF_HEIGHT 64
+#define TANK_DEF_WIDTH 36
+#define TANK_DEF_HEIGHT 36
 #define TANK_DEF_ACTLEVEL 1
 #define TANK_DEF_SPEED 2
 #define TANK_PADDING 0
-
+#define TANK_GNU_WIDTH 3
 
 extern Game* gGame;
 QLinearGradient TankGradient;
@@ -28,6 +28,7 @@ Tank::Tank(unsigned int tankId,AbstractAction *parent) :
     this->height = TANK_DEF_HEIGHT;
     this->actlevel = TANK_DEF_ACTLEVEL;
     this->speed = TANK_DEF_SPEED;
+    this->gnuWidth = TANK_GNU_WIDTH;
     this->vector = Tank::UP;
     TankGradient.setColorAt(0,Qt::white);
     TankGradient.setColorAt(1,Qt::green);
@@ -37,6 +38,7 @@ Tank::Tank(unsigned int tankId,AbstractAction *parent) :
     path = 0;
     initClipPath();
     this->setTransformOriginPoint(this->width / 2 ,this->height /2);
+
 }
 
 void Tank::resize(qreal width, qreal height)
@@ -79,13 +81,12 @@ void Tank::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     }
     QVector<QPointF> points;
     points <<
-        QPointF(this->width / 2 - 8, -2) <<
-        QPointF(this->width / 2 - 4, 0) <<
-        QPointF(this->width / 2 - 4, 30) <<
-        QPointF(this->width / 2 + 4, 30) <<
-        QPointF(this->width / 2 + 4, 0) <<
-        QPointF(this->width / 2 + 8, -2);
-
+        QPointF(this->width / 2 - gnuWidth * 2, 0) <<
+        QPointF(this->width / 2 - gnuWidth, gnuWidth) <<
+        QPointF(this->width / 2 - gnuWidth, this->height / 2) <<
+        QPointF(this->width / 2 + gnuWidth, this->height / 2) <<
+        QPointF(this->width / 2 + gnuWidth, gnuWidth) <<
+        QPointF(this->width / 2 + gnuWidth * 2, 0);
 
     qreal drawWidth = this->width - TANK_PADDING*2;
     qreal drawHeight = this->height - TANK_PADDING*2;
@@ -95,27 +96,27 @@ void Tank::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawChord(TANK_PADDING + 5,drawHeight -16 - TANK_PADDING,drawWidth - 10,15,16*180,16*180);
     painter->drawRect(TANK_PADDING,TANK_PADDING + 10,drawWidth,drawHeight -12 - TANK_PADDING);
     painter->drawRoundedRect(TANK_PADDING,TANK_PADDING,
-                             14 ,this->height - TANK_PADDING *2 ,2,2);
+                             this->width /4 ,this->height - TANK_PADDING *2 ,2,2);
     for(int i=1;i<5;i++){
-        painter->drawLine(TANK_PADDING,TANK_PADDING + i * 2,TANK_PADDING + 14,TANK_PADDING + i * 2);
+        painter->drawLine(TANK_PADDING,TANK_PADDING + i * 2,TANK_PADDING + this->width /4,TANK_PADDING + i * 2);
     }
     for(int i=4;i>0;i--){
-        painter->drawLine(TANK_PADDING,drawHeight + TANK_PADDING - i * 2,TANK_PADDING + 14,drawHeight + TANK_PADDING - i * 2);
+        painter->drawLine(TANK_PADDING,drawHeight + TANK_PADDING - i * 2,TANK_PADDING + this->width /4,drawHeight + TANK_PADDING - i * 2);
     }
-    painter->drawRoundedRect(drawWidth+TANK_PADDING - 14,TANK_PADDING,
-                             14 ,this->height - TANK_PADDING *2 ,2,2);
+    painter->drawRoundedRect(drawWidth+TANK_PADDING - this->width /4,TANK_PADDING,
+                             this->width /4 ,this->height - TANK_PADDING *2 ,2,2);
     for(int i=1;i<5;i++){
-        painter->drawLine(drawWidth+TANK_PADDING - 14,TANK_PADDING + i * 2,drawWidth+TANK_PADDING,TANK_PADDING + i * 2);
+        painter->drawLine(drawWidth+TANK_PADDING - this->width /4,TANK_PADDING + i * 2,drawWidth+TANK_PADDING,TANK_PADDING + i * 2);
     }
     for(int i=4;i>0;i--){
-        painter->drawLine(drawWidth+TANK_PADDING - 14,drawHeight + TANK_PADDING - i * 2,drawWidth+TANK_PADDING,drawHeight + TANK_PADDING - i * 2);
+        painter->drawLine(drawWidth+TANK_PADDING - this->width /4,drawHeight + TANK_PADDING - i * 2,drawWidth+TANK_PADDING,drawHeight + TANK_PADDING - i * 2);
     }
 
     painter->drawConvexPolygon(QPolygonF(points));
     painter->drawLine(points.at(1),points.at(4));
 
-    painter->drawEllipse(this->width /2 -10,26, 20,18);
-    painter->drawEllipse(this->width /2 -5,31, 10,8);
+    painter->drawRoundedRect(this->width /2 - this->width / 6,this->height /2 , this->width / 3, this->height /3, 2.0 , 2.0);
+    painter->drawEllipse(this->width /2 - this->width / 8,this->height /2 + 2, this->width / 4, this->height /4);
 
     switch(this->vector)
     {
@@ -178,21 +179,22 @@ void Tank::action(const QMap<int,bool> &keyPressed)
             Tank* tank = this;
             qreal dWidth = tank->getWidth();
             qreal dHeight = tank->getHeight();
+
             switch(tank->vector)
             {
             case Tank::UP:
-                gnu->setPos(tank->x() + dWidth / 2  ,tank->y() - 10);
+                gnu->setPos(tank->x() + dWidth / 2 - gnu->getWidth() /2,tank->y() - TANK_GNU_WIDTH);
                 break;
             case Tank::LEFT:
-                gnu->setPos(tank->x() - 10,tank->y()+dHeight / 2  );
+                gnu->setPos(tank->x() - TANK_GNU_WIDTH ,tank->y()+dHeight / 2 - gnu->getHeight()/2 );
                 gnu->setRotation(270);
                 break;
             case Tank::DOWN:
-                gnu->setPos(tank->x() + dWidth / 2,tank->y() + tank->getHeight() +10);
+                gnu->setPos(tank->x() + dWidth / 2 - gnu->getWidth() / 2,tank->y() + tank->getHeight() +TANK_GNU_WIDTH);
                 gnu->setRotation(180);
                 break;
             case Tank::RIGHT:
-                gnu->setPos(tank->x()+tank->getWidth() + 10,tank->y() + dHeight / 2);
+                gnu->setPos(tank->x()+tank->getWidth() + TANK_GNU_WIDTH,tank->y() + dHeight / 2 - gnu->getHeight() / 2);
                 gnu->setRotation(90);
                 break;
             }
