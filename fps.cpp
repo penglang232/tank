@@ -12,7 +12,7 @@ FPS::FPS(AbstractAction* parent):
     AbstractAction(parent)
 {
     prevtime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    _FPS=tr("30");
+    _FPS=tr("60");
     prevFPS = _FPS;
     flushCount = 0;
     this->setWidth(100);
