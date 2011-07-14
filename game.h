@@ -10,6 +10,7 @@ class TankView;
 class AbstractAction;
 class Place;
 class MapManager;
+class MapInfo;
 class Game : public QObject
 {
     Q_OBJECT
@@ -43,11 +44,14 @@ protected:
     TankView* tankview;
     MapManager* mapManager;
     void resetKey();
-
+private:
+    MapInfo* map;
 private slots:
     void paint();
     void createActionItems();
     void createBlockItems();
+    void createBackGroupItems();
+
 };
 
 #endif // STATEMANAGER_H

@@ -5,6 +5,7 @@
 #include "place.h"
 #include "fps.h"
 #include "mapmanager.h"
+#include "mapinfo.h"
 #include <QDebug>
 
 
@@ -27,10 +28,10 @@ Game::Game(TankView* tankview)
 
     resetKey();
 
-
     this->tankview = tankview;
     mapManager = new MapManager(tankview->drawScene,this);
 
+    this->createBackGroupItems();
     this->createActionItems();
     this->createBlockItems();
 
@@ -75,6 +76,15 @@ void Game::createBlockItems()
     blockItems.append(p1);
     blockItems.append(p2);
 
+}
+
+void Game::createBackGroupItems()
+{
+    QString mapbase(":/image/base/base1.png");
+    QString mapdata("test1.mdt");
+    this->map = new MapInfo(mapbase);
+    this->map->readMap(mapdata);
+    this->mapManager->initMap(map);
 }
 /*
     重置按键状态
