@@ -17,14 +17,7 @@ TankView::TankView(QGraphicsView *parent)
     this->setScene(this->drawScene);
     //this->setSceneRect(0,0,795,595);
     //this->setWindowFlags(Qt::FramelessWindowHint);
-    foreach(Sprite* s,this->game->actionItems)
-    {
-        this->drawScene->addItem(s);
-    }
-    foreach(Sprite* s,this->game->blockItems)
-    {
-        this->drawScene->addItem(s);
-    }
+
 }
 
 TankView::~TankView()

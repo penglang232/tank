@@ -9,6 +9,7 @@
 class TankView;
 class AbstractAction;
 class Place;
+class MapManager;
 class Game : public QObject
 {
     Q_OBJECT
@@ -40,7 +41,9 @@ public:
 protected:
 
     TankView* tankview;
+    MapManager* mapManager;
     void resetKey();
+
 private slots:
     void paint();
     void createActionItems();

@@ -9,6 +9,7 @@ QT       += core gui
 TEMPLATE = app
 }
 
+LIBS     += -L ./ -lgpscene
 TARGET = tank
 
 SOURCES += main.cpp\
@@ -31,7 +32,11 @@ HEADERS  += tankview.h \
     sprite.h \
     spark.h \
     fps.h \
-    global.h
+    global.h \
+    mapbase.h \
+    mapmanager.h \
+    mapinfo.h \
+    mapitem.h
 
 DEPLOYMENTFOLDERS = # file1 dir1
 
@@ -50,3 +55,6 @@ symbian:TARGET.UID3 = 0xE0891BF6
 # Please do not modify the following two lines. Required for deployment.
 include(deployment.pri)
 qtcAddDeployment()
+
+RESOURCES += \
+    image.qrc

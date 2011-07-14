@@ -3,6 +3,8 @@
 #include "tankview.h"
 #include "tankgnu.h"
 #include "place.h"
+#include "fps.h"
+#include "mapmanager.h"
 #include <QDebug>
 
 
@@ -12,6 +14,8 @@
      查找软键盘相应按键，再使用Keypressed 按键状态机设置按键状态
  */
 
+static QString actionType("action");
+static QString blockType("block");
 Game::Game(TankView* tankview)
 {
     //软键盘初始化
@@ -23,11 +27,23 @@ Game::Game(TankView* tankview)
 
     resetKey();
 
+
+    this->tankview = tankview;
+    mapManager = new MapManager(tankview->drawScene,this);
+
     this->createActionItems();
     this->createBlockItems();
 
-    this->tankview = tankview;
-    timer.setInterval(16);
+    foreach(Sprite* s,this->actionItems)
+    {
+        mapManager->addSprite(s,actionType);
+    }
+    foreach(Sprite* s,this->blockItems)
+    {
+        mapManager->addSprite(s,blockType);
+    }
+
+    timer.setInterval(DEF_FLUSH_TIMESTAMP);
 
     this->connect(&timer,SIGNAL(timeout()),this,SLOT(paint()));
     timer.start();
@@ -104,13 +120,13 @@ void Game::addActionToScene(AbstractAction *s)
 void Game::removeActionForScene(AbstractAction *s)
 {
     this->actionItems.removeAll(s);
-    this->tankview->drawScene->removeItem(s);
+    this->mapManager->removeSprite(s,actionType);
 }
 
 void Game::removeBlockForScene(Place *s)
 {
     this->blockItems.removeAll(s);
-    this->tankview->drawScene->removeItem(s);
+    this->mapManager->removeSprite(s,blockType);
 }
 
 //碰撞检测
