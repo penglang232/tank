@@ -4,6 +4,8 @@
 #include "global.h"
 #include <QKeyEvent>
 #include <QDebug>
+#include <QGLWidget>
+
 
 extern Game* gGame;
 
@@ -15,6 +17,7 @@ TankView::TankView(QGraphicsView *parent)
     this->game = new Game(this);
     gGame = this->game;
     this->setScene(this->drawScene);
+    if(USING_OPENGL)this->setViewport(new QGLWidget());
     //this->setSceneRect(0,0,795,595);
     //this->setWindowFlags(Qt::FramelessWindowHint);
 

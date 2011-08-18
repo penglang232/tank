@@ -59,7 +59,10 @@ Game::~Game()
 void Game::createActionItems()
 {
     Tank* tank1 = new Tank(1);
+    tank1->setZValue(2);
+    FPS* fps = new FPS();
     actionItems.append(tank1);
+    actionItems.append(fps);
 }
 //初始化场景不可动物体
 void Game::createBlockItems()
@@ -78,13 +81,20 @@ void Game::createBlockItems()
 
 }
 
+
+//初始化场景
 void Game::createBackGroupItems()
 {
     QString mapbase(":/image/base/base1.png");
-    QString mapdata("test1.mdt");
+    QString mapdata("test2.mdt");
     this->map = new MapInfo(mapbase);
     this->map->readMap(mapdata);
+    QList<MapBase* > list = this->map->getMapBaseInfo();
+    foreach(MapBase* mapBase , list){
+        mapBase->setZValue(1);
+    }
     this->mapManager->initMap(map);
+
 }
 /*
     重置按键状态
@@ -114,6 +124,7 @@ void Game::paint()
 
         actionItem->action(this->keyPressed);
     }
+    this->tankview->drawScene->update();
 }
 
 void Game::addToScene(Place *s)

@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 win32{
-QT       += core gui
+QT       += core gui opengl
 TEMPLATE = app
 }
 
