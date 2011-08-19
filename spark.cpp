@@ -1,5 +1,5 @@
 #include "spark.h"
-#include "place.h"
+#include "sprite.h"
 #include "game.h"
 #include <QPainter>
 #include <math.h>
@@ -8,8 +8,8 @@ qreal Pi = 3.1415926;
 
 extern Game* gGame;
 
-Spark::Spark(Place* p):
-        Place(PLACE_QUALITY_DEF, p)
+Spark::Spark(Sprite* p)
+    :Sprite(p)
 {
     this->width = 100;
     this->height = 100;
@@ -31,6 +31,6 @@ void Spark::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Spark::clear()
 {
-    gGame->removeBlockForScene(this);
+    gGame->removeForScene(this);
     delete this;
 }

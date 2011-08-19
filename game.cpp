@@ -2,7 +2,7 @@
 #include "abstractaction.h"
 #include "tankview.h"
 #include "tankgnu.h"
-#include "place.h"
+#include "mapitem.h"
 #include "fps.h"
 #include "mapmanager.h"
 #include "mapinfo.h"
@@ -17,6 +17,7 @@
 
 static QString actionType("action");
 static QString blockType("block");
+static QString spriteType("sprite");
 Game::Game(TankView* tankview)
 {
     //软键盘初始化
@@ -31,15 +32,13 @@ Game::Game(TankView* tankview)
     this->tankview = tankview;
     mapManager = new MapManager(tankview->drawScene,this);
 
-    this->createBackGroupItems();
-    this->createActionItems();
-    this->createBlockItems();
+    this->initMap();
 
     foreach(Sprite* s,this->actionItems)
     {
         mapManager->addSprite(s,actionType);
     }
-    foreach(Sprite* s,this->blockItems)
+    foreach(Sprite* s,this->mapItems)
     {
         mapManager->addSprite(s,blockType);
     }
@@ -48,7 +47,6 @@ Game::Game(TankView* tankview)
 
     this->connect(&timer,SIGNAL(timeout()),this,SLOT(paint()));
     timer.start();
-
 }
 
 Game::~Game()
@@ -59,42 +57,32 @@ Game::~Game()
 void Game::createActionItems()
 {
     Tank* tank1 = new Tank(1);
-    tank1->setZValue(2);
+    //tank1->setZValue(2);
     FPS* fps = new FPS();
+    tank1->setPos(100,100);
     actionItems.append(tank1);
     actionItems.append(fps);
 }
 //初始化场景不可动物体
-void Game::createBlockItems()
+void Game::createMapItems()
 {
-    Place* p1 = new Place();
-    Place* p2 = new Place();
-
-    p1->setX(200);
-    p1->setY(200);
-    p1->resize(100,30);
-    p2->setX(410);
-    p2->setY(200);
-    p2->resize(203,100);
-    blockItems.append(p1);
-    blockItems.append(p2);
-
+    foreach( MapItem* item , this->map->getMapItemInfo())
+    {
+        this->mapItems.append(item); //将地图MapItem信息全部固有物件
+    }
 }
 
-
 //初始化场景
-void Game::createBackGroupItems()
+void Game::initMap()
 {
     QString mapbase(":/image/base/base1.png");
     QString mapdata("test2.mdt");
     this->map = new MapInfo(mapbase);
     this->map->readMap(mapdata);
-    QList<MapBase* > list = this->map->getMapBaseInfo();
-    foreach(MapBase* mapBase , list){
-        mapBase->setZValue(1);
-    }
-    this->mapManager->initMap(map);
 
+    this->mapManager->initMap(map);
+    this->createActionItems();
+    this->createMapItems();
 }
 /*
     重置按键状态
@@ -125,13 +113,22 @@ void Game::paint()
         actionItem->action(this->keyPressed);
     }
     this->tankview->drawScene->update();
+
 }
 
-void Game::addToScene(Place *s)
+void Game::addToScene(Sprite *s)
 {
     this->tankview->drawScene->addItem(s);
-    this->blockItems.append(s);
+    this->spriteItems.append(s);
 }
+
+void Game::addMapItemToScene(MapItem *s)
+{
+    this->tankview->drawScene->addItem(s);
+    this->mapItems.append(s);
+}
+
+
 void Game::addActionToScene(AbstractAction *s)
 {
     this->tankview->drawScene->addItem(s);
@@ -144,14 +141,20 @@ void Game::removeActionForScene(AbstractAction *s)
     this->mapManager->removeSprite(s,actionType);
 }
 
-void Game::removeBlockForScene(Place *s)
+void Game::removeMapItemForScene(MapItem *s)
 {
-    this->blockItems.removeAll(s);
-    this->mapManager->removeSprite(s,blockType);
+    this->mapItems.removeAll(s);
+    this->mapManager->removeSprite(s,s->typeName);
+}
+
+void Game::removeForScene(Sprite *s)
+{
+    this->spriteItems.removeAll(s);
+    this->mapManager->removeSprite(s,spriteType);
 }
 
 //碰撞检测
-bool Game::hitTest(Place *s)
+bool Game::hitTest(Sprite *s)
 {
     return s->collidingItems().length() > 0;
 }

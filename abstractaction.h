@@ -1,11 +1,11 @@
 #ifndef ABSTRACTACTION_H
 #define ABSTRACTACTION_H
 
-#include "place.h"
+#include "sprite.h"
 #include <QMap>
 #include <QPointF>
 
-class AbstractAction : public Place
+class AbstractAction : public Sprite
 {
 public:
     AbstractAction(Sprite* parent = 0);

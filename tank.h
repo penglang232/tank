@@ -22,7 +22,7 @@ public:
     qreal speed;
     unsigned int tankId;
     unsigned int gnuWidth;
-    uint actlevel;
+    int actlevel;
     TankVector vector;
 
     int act();

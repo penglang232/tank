@@ -1,6 +1,6 @@
 #include "tankview.h"
 #include "tank.h"
-#include "place.h"
+#include "mapitem.h"
 #include "global.h"
 #include <QKeyEvent>
 #include <QDebug>

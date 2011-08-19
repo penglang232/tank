@@ -1,13 +1,13 @@
 #ifndef SPARK_H
 #define SPARK_H
 #include "sprite.h"
-#include "place.h"
+
 #include <QTimer>
-class Spark : public Place
+class Spark : public Sprite
 {
     Q_OBJECT
 public:
-    Spark(Place* p = 0);
+    Spark(Sprite* p = 0);
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

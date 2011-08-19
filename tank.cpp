@@ -4,8 +4,10 @@
 #include <QPainterPath>
 #include <QDebug>
 #include <QTime>
+#include <typeinfo>
 #include "game.h"
 #include "tankgnu.h"
+#include "mapitem.h"
 
 #define TANK_DEF_WIDTH 36
 #define TANK_DEF_HEIGHT 36
@@ -204,7 +206,7 @@ void Tank::action(const QMap<int,bool> &keyPressed)
         //keyPressed.insert(Game::SK_ACT,false);
         }
     }
-    foreach(Sprite* item , gGame->blockItems) //检测阻隔对象
+    foreach(MapItem* item , gGame->mapItems) //检测阻隔对象
     {
         if(item->collidesWithItem(this))
         {
@@ -216,16 +218,24 @@ void Tank::action(const QMap<int,bool> &keyPressed)
     }
 }
 
+
+//坦克攻击逻辑
 void Tank::ackDone(TankGnu* gnu)
 {
-    qDebug() << this->tankId<< " ack Done";
-    gGame->removeActionForScene(gnu);
 
-    foreach(Place* p ,gGame->blockItems)
+    MapItem* p = 0;
+    foreach(QGraphicsItem* item, gnu->collidingItems())
     {
+        if(typeid(*item) == typeid(MapItem)){
+            p = static_cast<MapItem*>(item);
+            break;
+        }
+    }
+    if(p){
         if(p->collidesWithItem(gnu)){
-            if(p->quality <= this->actlevel){
-                gGame->removeBlockForScene(p);
+            if(p->breakType <= this->actlevel){
+                qDebug() << "攻击成功";
+                gGame->removeMapItemForScene(p);
 
                 Spark* spark = new Spark();
                 spark->setX(p->x());
@@ -233,13 +243,16 @@ void Tank::ackDone(TankGnu* gnu)
                 gGame->addToScene(spark);
 
                 delete p;
+            }else{
+                qDebug() << "对方防御力太高";
             }
+            gGame->removeActionForScene(gnu);
+            this->gnus.removeAll(gnu);
+
+            this->acking = false;
+            delete gnu;
+
         }
     }
-
-    this->acking = false;
-    this->gnus.removeAll(gnu);
-
-    delete gnu;
 
 }

@@ -7,7 +7,7 @@
 #include "tank.h"
 #include "game.h"
 #include "abstractaction.h"
-#define USING_OPENGL true
+#define USING_OPENGL false
 class Place;
 class TankView : public QGraphicsView
 {

@@ -16,17 +16,14 @@ SOURCES += main.cpp\
         tankview.cpp \
     tank.cpp \
     game.cpp \
-    place.cpp \
     tankgnu.cpp \
     abstractaction.cpp \
-    sprite.cpp \
     spark.cpp \
     fps.cpp
 
 HEADERS  += tankview.h \
     tank.h \
     game.h \
-    place.h \
     tankgnu.h \
     abstractaction.h \
     sprite.h \

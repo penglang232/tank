@@ -5,10 +5,10 @@
 #include <QList>
 
 
-
+class Sprite;
 class TankView;
 class AbstractAction;
-class Place;
+class MapItem;
 class MapManager;
 class MapInfo;
 class Game : public QObject
@@ -28,16 +28,19 @@ public:
 
     QMap<int,bool> keyPressed;
     QMap<int,int> SKey;
-    QList<AbstractAction*> actionItems;
-    QList<Place*> blockItems;
+    QList<AbstractAction*> actionItems; //不停动作的部件
+    QList<MapItem*> mapItems;           //固有的部件
+    QList<Sprite*> spriteItems;         //可以显示的部件
 
     void onKeyPressed(int key);
     void onKeyRelease(int key);
-    void addToScene(Place* s);
+    void addToScene(Sprite* s);
+    void addMapItemToScene(MapItem* s);
     void addActionToScene(AbstractAction *s);
     void removeActionForScene(AbstractAction *s);
-    void removeBlockForScene(Place* s);
-    bool hitTest(Place* s);
+    void removeMapItemForScene(MapItem* s);
+    void removeForScene(Sprite* s);
+    bool hitTest(Sprite* s);
     QTimer timer;
 protected:
 
@@ -49,8 +52,8 @@ private:
 private slots:
     void paint();
     void createActionItems();
-    void createBlockItems();
-    void createBackGroupItems();
+    void createMapItems();
+    void initMap();
 
 };
 

@@ -1,7 +1,7 @@
 #include "abstractaction.h"
 //中文
 AbstractAction::AbstractAction(Sprite* parent)
-    : Place(PLACE_QUALITY_DEF,parent)
+    :Sprite(parent)
 {
 
 }
