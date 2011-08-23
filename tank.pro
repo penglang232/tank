@@ -4,10 +4,10 @@
 #
 #-------------------------------------------------
 
-win32{
+
 QT       += core gui opengl
 TEMPLATE = app
-}
+
 
 LIBS     += -L ./ -lgpscene
 TARGET = tank
