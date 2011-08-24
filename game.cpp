@@ -4,6 +4,7 @@
 #include "tankgnu.h"
 #include "mapitem.h"
 #include "fps.h"
+#include "combatbase.h"
 #include "mapmanager.h"
 #include "mapinfo.h"
 #include <QDebug>
@@ -13,9 +14,10 @@
      软键盘
      按键的时候通过预先初始化的SKey(QMap类型 key是qt按键值value是软键盘)
      查找软键盘相应按键，再使用Keypressed 按键状态机设置按键状态
+
  */
 
-static QString actionType("action");
+static QString actionType("action"); //根据mdt文件中的类型分类并加入场景
 static QString blockType("block");
 static QString spriteType("sprite");
 Game::Game(TankView* tankview)
@@ -57,19 +59,25 @@ Game::~Game()
 void Game::createActionItems()
 {
     Tank* tank1 = new Tank(1);
-    //tank1->setZValue(2);
+
     FPS* fps = new FPS();
+    CombatBase* base = new CombatBase(this->map->base);
     tank1->setPos(100,100);
+
     actionItems.append(tank1);
     actionItems.append(fps);
+
 }
-//初始化场景不可动物体
+//初始化场景不可动阻隔物体
 void Game::createMapItems()
 {
+    mapItems.append(this->map->getMapItemInfo());
+    /*
     foreach( MapItem* item , this->map->getMapItemInfo())
     {
         this->mapItems.append(item); //将地图MapItem信息全部固有物件
     }
+    */
 }
 
 //初始化场景

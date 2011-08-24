@@ -206,6 +206,7 @@ void Tank::action(const QMap<int,bool> &keyPressed)
         //keyPressed.insert(Game::SK_ACT,false);
         }
     }
+
     foreach(MapItem* item , gGame->mapItems) //检测阻隔对象
     {
         if(item->collidesWithItem(this))

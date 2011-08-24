@@ -32,5 +32,6 @@ void Spark::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 void Spark::clear()
 {
     gGame->removeForScene(this);
+    delete timer;
     delete this;
 }

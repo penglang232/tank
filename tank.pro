@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     tankgnu.cpp \
     abstractaction.cpp \
     spark.cpp \
-    fps.cpp
+    fps.cpp \
+    combatbase.cpp
 
 HEADERS  += tankview.h \
     tank.h \
@@ -33,7 +34,8 @@ HEADERS  += tankview.h \
     mapbase.h \
     mapmanager.h \
     mapinfo.h \
-    mapitem.h
+    mapitem.h \
+    combatbase.h
 
 DEPLOYMENTFOLDERS = # file1 dir1
 
