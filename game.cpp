@@ -61,7 +61,7 @@ void Game::createActionItems()
     Tank* tank1 = new Tank(1);
 
     FPS* fps = new FPS();
-    CombatBase* base = new CombatBase(this->map->base);
+
     tank1->setPos(100,100);
 
     actionItems.append(tank1);
@@ -71,13 +71,39 @@ void Game::createActionItems()
 //初始化场景不可动阻隔物体
 void Game::createMapItems()
 {
-    mapItems.append(this->map->getMapItemInfo());
-    /*
+    //mapItems.append(this->map->getMapItemInfo());
+
+
     foreach( MapItem* item , this->map->getMapItemInfo())
     {
-        this->mapItems.append(item); //将地图MapItem信息全部固有物件
+         //将地图MapItem信息全部固有物件
+        switch(item->special)
+        {
+        case 1:  // 1为基地(CombatBase)
+            combatBase = new CombatBase(this->map->base);
+            combatBase->hindex = item->hindex;
+            combatBase->vindex = item->vindex;
+            combatBase->typeName = item->typeName;
+            combatBase->breakType = item->breakType;
+            combatBase->crossType = item->crossType;
+            combatBase->checkType = item->checkType;
+            combatBase->mapX = item->mapX;
+            combatBase->mapY = item->mapY;
+            combatBase->mapZ = item->mapZ;
+            combatBase->setIColnum(item->iColnum);
+            combatBase->setIRownum(item->iRownum);
+            combatBase->updateLocation();
+            combatBase->health = combatBase->breakType; // 破坏类型为生命值
+
+            delete item;
+            item = combatBase;
+            break;
+        }
+
+
+        this->mapItems.append(item);
     }
-    */
+
 }
 
 //初始化场景

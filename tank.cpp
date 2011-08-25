@@ -8,6 +8,7 @@
 #include "game.h"
 #include "tankgnu.h"
 #include "mapitem.h"
+#include "combatbase.h"
 
 #define TANK_DEF_WIDTH 36
 #define TANK_DEF_HEIGHT 36
@@ -218,22 +219,33 @@ void Tank::action(const QMap<int,bool> &keyPressed)
         }
     }
 }
+void Tank::resetAck(TankGnu* gnu)
+{
+    gGame->removeActionForScene(gnu);
+    this->gnus.removeAll(gnu);
 
+    this->acking = false;
+    delete gnu;
+}
 
 //坦克攻击逻辑
 void Tank::ackDone(TankGnu* gnu)
 {
-
     MapItem* p = 0;
+
     foreach(QGraphicsItem* item, gnu->collidingItems())
     {
         if(typeid(*item) == typeid(MapItem)){
             p = static_cast<MapItem*>(item);
             break;
+        }else if(typeid(*item) == typeid(CombatBase)){
+            p = static_cast<MapItem*>(item);
+            break;
         }
+
     }
     if(p){
-        if(p->collidesWithItem(gnu)){
+        if(typeid(*p) == typeid(MapItem)){
             if(p->breakType <= this->actlevel){
                 qDebug() << "攻击成功";
                 gGame->removeMapItemForScene(p);
@@ -242,17 +254,14 @@ void Tank::ackDone(TankGnu* gnu)
                 spark->setX(p->x());
                 spark->setY(p->y());
                 gGame->addToScene(spark);
-
                 delete p;
             }else{
                 qDebug() << "对方防御力太高";
             }
-            gGame->removeActionForScene(gnu);
-            this->gnus.removeAll(gnu);
-
-            this->acking = false;
-            delete gnu;
-
+            this->resetAck(gnu);
+        }else if(typeid(*p) == typeid(CombatBase)){
+            qDebug() << this->tankId << "攻击基地了!";
+            this->resetAck(gnu);
         }
     }
 

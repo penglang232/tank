@@ -1,11 +1,9 @@
 #include "tankgnu.h"
 #include <QPainter>
+
 #define GNU_DEF_WIDTH 6
 #define GNU_DEF_HEIGHT 20
 #define GNU_DEF_SPEED 4
-
-static QLinearGradient GnuGradient;
-static QPainterPath path;
 
 TankGnu::TankGnu(Tank* tank)
 {
@@ -15,10 +13,10 @@ TankGnu::TankGnu(Tank* tank)
     this->ackVector = tank->vector;
     this->speed = GNU_DEF_SPEED;
 
-    GnuGradient.setColorAt(0,Qt::white);
-    GnuGradient.setColorAt(1,Qt::green);
-    GnuGradient.setStart(1,0);
-    GnuGradient.setFinalStop(10,10);
+    gnuGradient.setColorAt(0,Qt::white);
+    gnuGradient.setColorAt(1,Qt::green);
+    gnuGradient.setStart(1,0);
+    gnuGradient.setFinalStop(10,10);
 
     path.moveTo(0,5);
     path.lineTo(3,0);
@@ -61,7 +59,7 @@ void TankGnu::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
            QWidget *widget)
 {
     painter->setPen(Qt::black);
-    painter->setBrush(QBrush(GnuGradient));
+    painter->setBrush(QBrush(this->gnuGradient));
     painter->drawPath(path);
     //painter->drawRect(0,0,this->width,this->height);
 

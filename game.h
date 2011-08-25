@@ -11,6 +11,7 @@ class AbstractAction;
 class MapItem;
 class MapManager;
 class MapInfo;
+class CombatBase;
 class Game : public QObject
 {
     Q_OBJECT
@@ -31,6 +32,7 @@ public:
     QList<AbstractAction*> actionItems; //不停动作的部件
     QList<MapItem*> mapItems;           //固有的部件
     QList<Sprite*> spriteItems;         //可以显示的部件
+    CombatBase* combatBase;
 
     void onKeyPressed(int key);
     void onKeyRelease(int key);

@@ -2,6 +2,8 @@
 #define TANKGNU_H
 #include "abstractaction.h"
 #include "tank.h"
+#include <QLinearGradient>
+
 class TankGnu : public AbstractAction
 {
 public:
@@ -20,6 +22,8 @@ protected:
 private:
     int ackVector;
     int speed;
+    QPainterPath path;
+    QLinearGradient gnuGradient;
 };
 
 #endif // TANKGNU_H
