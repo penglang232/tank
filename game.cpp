@@ -76,7 +76,7 @@ void Game::createMapItems()
 
     foreach( MapItem* item , this->map->getMapItemInfo())
     {
-         //将地图MapItem信息全部固有物件
+         //对应特定special将地图MapItem信息转换成特定对象
         switch(item->special)
         {
         case 1:  // 1为基地(CombatBase)
@@ -94,6 +94,7 @@ void Game::createMapItems()
             combatBase->setIRownum(item->iRownum);
             combatBase->updateLocation();
             combatBase->health = combatBase->breakType; // 破坏类型为生命值
+
 
             delete item;
             item = combatBase;
@@ -191,4 +192,9 @@ void Game::removeForScene(Sprite *s)
 bool Game::hitTest(Sprite *s)
 {
     return s->collidingItems().length() > 0;
+}
+
+void Game::combatBaseDamage(Tank* tank)
+{
+    qDebug()<< "坦克="<<tank->tankId << "-攻击了基地";
 }

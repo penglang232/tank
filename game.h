@@ -7,6 +7,7 @@
 
 class Sprite;
 class TankView;
+class Tank;
 class AbstractAction;
 class MapItem;
 class MapManager;
@@ -56,7 +57,7 @@ private slots:
     void createActionItems();
     void createMapItems();
     void initMap();
-
+    void combatBaseDamage(Tank* tank);
 };
 
 #endif // STATEMANAGER_H

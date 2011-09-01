@@ -9,4 +9,5 @@ CombatBase::CombatBase(QPixmap* base):
 void CombatBase::attack(Tank* tank)
 {
 
+    emit this->attacked(tank);
 }

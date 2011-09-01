@@ -261,8 +261,11 @@ void Tank::ackDone(TankGnu* gnu)
             this->resetAck(gnu);
         }else if(typeid(*p) == typeid(CombatBase)){
             qDebug() << this->tankId << "攻击基地了!";
+            CombatBase* base = static_cast<CombatBase*>(p);
+            base->attack(this);
             this->resetAck(gnu);
         }
+
     }
 
 }
