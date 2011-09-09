@@ -58,3 +58,12 @@ qtcAddDeployment()
 
 RESOURCES += \
     image.qrc
+
+OTHER_FILES += \
+    tank2.png \
+    tank1.png \
+    start_game.png \
+    logo.png \
+    contniue_game.png \
+    base1.png
+

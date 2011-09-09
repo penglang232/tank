@@ -3,7 +3,7 @@
 #include <QTimer>
 #include <QMap>
 #include <QList>
-
+#include <QPixmap>
 
 class Sprite;
 class TankView;
@@ -52,11 +52,18 @@ protected:
     void resetKey();
 private:
     MapInfo* map;
+    Sprite* gameStartBackgroup;
+    QPixmap* gameStartBackgroupImage;
+    QPixmap* gameStartTextImage;
+    QPixmap* gameStartContinueTextImage;
+    Sprite* startText;
+    Sprite* continueText;
 private slots:
     void paint();
     void createActionItems();
     void createMapItems();
     void initMap();
+    void startScene();
     void combatBaseDamage(Tank* tank);
 };
 

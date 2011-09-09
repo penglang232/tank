@@ -33,22 +33,10 @@ Game::Game(TankView* tankview)
 
     this->tankview = tankview;
     mapManager = new MapManager(tankview->drawScene,this);
+    this->startScene();
+    //this->initMap();
 
-    this->initMap();
 
-    foreach(Sprite* s,this->actionItems)
-    {
-        mapManager->addSprite(s,actionType);
-    }
-    foreach(Sprite* s,this->mapItems)
-    {
-        mapManager->addSprite(s,blockType);
-    }
-
-    timer.setInterval(DEF_FLUSH_TIMESTAMP);
-
-    this->connect(&timer,SIGNAL(timeout()),this,SLOT(paint()));
-    timer.start();
 }
 
 Game::~Game()
@@ -61,7 +49,7 @@ void Game::createActionItems()
     Tank* tank1 = new Tank(1);
 
     FPS* fps = new FPS();
-
+    fps->setPos(-100,-100);
     tank1->setPos(100,100);
 
     actionItems.append(tank1);
@@ -106,10 +94,37 @@ void Game::createMapItems()
     }
 
 }
+//游戏选择界面
+void Game::startScene()
+{
+    gameStartBackgroup = new Sprite();
+    gameStartBackgroupImage = new QPixmap(":/main/logo.png");
+    gameStartTextImage = new QPixmap(":/main/start_game.png");
+    gameStartContinueTextImage = new QPixmap(":/main/contniue_game.png");
 
+    QGraphicsScene* scene = this->tankview->drawScene;
+    scene->setBackgroundBrush(QBrush(Qt::black));
+
+    gameStartBackgroup->setPixmap(gameStartBackgroupImage);
+
+    this->tankview->drawScene->addItem(gameStartBackgroup);
+
+    startText = new Sprite();
+    startText->setPixmap(gameStartTextImage);
+    startText->setPos(60,100);
+    scene->addItem(startText);
+
+    continueText = new Sprite();
+    continueText->setPixmap(gameStartContinueTextImage);
+    continueText->setPos(60,140);
+    scene->addItem(continueText);
+
+    connect(startText,SIGNAL(onMousePress(qreal,qreal,Qt::MouseButtons)),this,SLOT(initMap()));
+}
 //初始化场景
 void Game::initMap()
 {
+    qDebug()<< "init map...";
     QString mapbase(":/image/base/base1.png");
     QString mapdata("test2.mdt");
     this->map = new MapInfo(mapbase);
@@ -118,6 +133,20 @@ void Game::initMap()
     this->mapManager->initMap(map);
     this->createActionItems();
     this->createMapItems();
+
+    foreach(Sprite* s,this->actionItems)
+    {
+        mapManager->addSprite(s,actionType);
+    }
+    foreach(Sprite* s,this->mapItems)
+    {
+        mapManager->addSprite(s,blockType);
+    }
+
+    timer.setInterval(DEF_FLUSH_TIMESTAMP);
+
+    this->connect(&timer,SIGNAL(timeout()),this,SLOT(paint()));
+    timer.start();
 }
 /*
     重置按键状态

@@ -2,4 +2,9 @@
     <qresource prefix="/image/base">
         <file>base1.png</file>
     </qresource>
+    <qresource prefix="/main">
+        <file>logo.png</file>
+        <file>contniue_game.png</file>
+        <file>start_game.png</file>
+    </qresource>
 </RCC>
